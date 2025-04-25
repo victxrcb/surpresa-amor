@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amor em Imagens</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, #552586, #B589D6);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: white;
+      text-align: center;
+    }
+
+    .carousel {
+      width: 90%;
+      max-width: 500px;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+      cursor: grab;
+    }
+
+    .slides {
+      display: flex;
+      width: 300%;
+      transition: transform 0.3s ease;
+    }
+
+    .slides img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+
+    .romantic-message {
+      font-size: 1.5em;
+      max-width: 600px;
+      padding: 0 20px;
+      margin-bottom: 20px;
+    }
+
+    .music-button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #fff;
+      color: #db7093;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .music-button:hover {
+      background-color: #fddde6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="carousel">
+    <div class="slides">
+        <img src="/public/eu1.jpeg"> 
+        <img src="/public/eu2.jpeg">
+        <img src="/public/eu3.jpeg">
+    </div>
+  </div>
+
+  <div class="romantic-message">
+    <p>
+      Cada imagem é uma lembrança linda do nosso amor.<br>
+      Te amo mais a cada dia! 💖
+    </p>
+  </div>
+
+  <button class="music-button" onclick="toggleMusic()">Tocar Música</button>
+
+  <audio id="loveSong">
+    <source src="/public/Drake - Yebba’s Heartbreak (Audio) [9rlW2rUzyn0].mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <script>
+    const audio = document.getElementById('loveSong');
+    let isPlaying = false;
+
+    function toggleMusic() {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      isPlaying = !isPlaying;
+    }
+
+    const carousel = document.querySelector('.carousel');
+    const slides = document.querySelector('.slides');
+    let isMouseDown = false;
+    let startX;
+    let scrollLeft;
+
+    carousel.addEventListener('mousedown', (e) => {
+      isMouseDown = true;
+      startX = e.pageX - carousel.offsetLeft;
+      scrollLeft = slides.scrollLeft;
+      carousel.style.cursor = 'grabbing';
+    });
+
+    carousel.addEventListener('mouseleave', () => {
+      isMouseDown = false;
+      carousel.style.cursor = 'grab';
+    });
+
+    carousel.addEventListener('mouseup', () => {
+      isMouseDown = false;
+      carousel.style.cursor = 'grab';
+    });
+
+    carousel.addEventListener('mousemove', (e) => {
+      if (!isMouseDown) return;
+      e.preventDefault();
+      const x = e.pageX - carousel.offsetLeft;
+      const walk = (x - startX) * 2; // O "2" aqui controla a velocidade do arraste
+      slides.style.transform = `translateX(${-(scrollLeft + walk)}px)`;
+    });
+  </script>
+
+</body>
+</html>
